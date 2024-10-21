@@ -1,4 +1,18 @@
 
+GOOD_GNODEB_STARTUP_DELAY=10
+
+GOOD_GNODEB_STATUS_DUMPER_STARTUP_DELAY=15
+IPERF3_STARTUP_DELAY=15
+
+UE1_STARTUP_DELAY=15
+UE1_PING_STARTUP_DELAY=20
+UE1_IPERF_CLIENT_STARTUP_DELAY=35
+
+RESULTS_GATHERING_DELAY=60
+
+
+RESULTS_FOLDER=/results/
+
 
 # Checks to ensure that the 5G core is setup and ready to go
 CheckFor5GCoreSetup () {
@@ -35,3 +49,58 @@ CheckFor4gGNBSetup () {
 
 }
 
+
+
+# Terminates all running GNodeB Stats gathering scripts
+TerminateGNodeBStatsGatherers () {
+    echo "Terminating the gNodeB stats gatherers"
+    (set +e ; ps -ef | grep "dumpGNodeBStats.py" | awk '{print $2}' | xargs kill -SIGINT)
+    echo "The gNodeB stats gatherers have been terminated"
+}
+
+# Terminates all running GNodeBs
+TerminateGNodeBs () {
+    echo "Terminating the gNodeBs"
+    (set +e ; ps -ef | grep "gnb" | awk '{print $2}' | sudo xargs kill -SIGINT)
+    echo "The gNodeBs have been terminated"
+}
+
+# Terminates all running UEs
+TerminateUEs () {
+    echo "Terminating the UEs"
+    (set +e ; ps -ef | grep "srsue" | awk '{print $2}' | sudo xargs kill -SIGINT)
+    echo "The UEs have been terminated"
+}
+
+# Terminates all running pingers
+TerminateUEPingers () {
+    echo "Terminating the UE Pingers"
+    (set +e ; ps -ef | grep "ping" | awk '{print $2}' | sudo xargs kill -SIGINT)
+    echo "The UE Pingers have been terminated"
+}
+
+# Terminates all running iperf3
+TerminateIPerf3 () {
+    echo "Terminating the IPerf3 clients and servers"
+    (set +e ; ps -ef | grep "iperf3" | awk '{print $2}' | xargs kill -SIGINT)
+    echo "The IPerf3 clients and servers have been terminated"
+}
+
+# Terminates all running 5GCores
+Terminate5GCore () {
+    echo "Terminating the 5G Core"
+    sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=docker-5gc))
+    echo "5G Core Terminated"
+}
+
+# Terminates all services
+TerminateAllServices () {
+    echo "Terminating All Services"
+    TerminateUEPingers
+    TerminateIPerf3
+    TerminateUEs
+    TerminateGNodeBStatsGatherers
+    TerminateGNodeBs
+    Terminate5GCore
+    echo "All Services have been terminated"
+}

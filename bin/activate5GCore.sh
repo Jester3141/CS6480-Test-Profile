@@ -2,7 +2,8 @@
 set -ex
 
 # bring in common functions
-. activateFunctions.sh
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source ${SCRIPT_DIR}/activateFunctions.sh
 
 
 # ensure we are ready to run the 5G core
