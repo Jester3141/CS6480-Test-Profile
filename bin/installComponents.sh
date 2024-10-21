@@ -11,8 +11,8 @@ sudo ./deploy-srs.sh release_23_11 srsRAN_4G
 
 
 # install other components
-sudo apt install -y python3-pip jsonstream matplotlib
-sudo pip install ruamel.yaml
+sudo apt install -y python3-pip
+sudo pip install ruamel.yaml jsonstream matplotlib
 
 
 # create a network namespace for the UE(s)
