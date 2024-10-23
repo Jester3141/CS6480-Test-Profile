@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "5G Core"
 set -ex
 
 # bring in common functions

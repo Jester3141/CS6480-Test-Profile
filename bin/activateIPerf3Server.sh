@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "IPerf3 Server"
 set -e
 
 # bring in common functions

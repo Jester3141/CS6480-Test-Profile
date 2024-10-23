@@ -140,6 +140,7 @@ for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
     cmd = "sudo {} '{}' {}".format(SRS_DEPLOY_SCRIPT, type_hash, srs_type)
     node.addService(rspec.Execute(shell="bash", command=cmd))
 node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/installComponents.sh"))
+node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/launchExperimentInTmux.sh"))
 
 if params.enable_vnc:
     node.startVNC()

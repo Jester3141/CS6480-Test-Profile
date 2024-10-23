@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "UE1 Ping"
 set -e
 
 # bring in common functions

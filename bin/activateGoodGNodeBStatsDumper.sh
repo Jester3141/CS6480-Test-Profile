@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "Good gNodeB Stats Dumper"
 set -e
 
 # bring in common functions

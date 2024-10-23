@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo -e "Experiment Terminator and Result Gatherer"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source ${SCRIPT_DIR}/activateFunctions.sh
 

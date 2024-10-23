@@ -39,38 +39,38 @@ def extractBandwidthInfoFromIperfData(iperfData):
 
 
 def writeGraphWithDataToFile(args, ueNum, gnbData, gnbParameter, ueData, iperfData):
+    # giving a title to my graph
+    plt.title(f"UE {ueNum} - {parameter} vs Time")
+
     #pp.pprint(gnbData)
     x = [p["timestamp"] for p in gnbData if "ue_list" in p]
     y = [p["ue_list"][ueNum]["ue_container"][gnbParameter] for p in gnbData if "ue_list" in p]
     #print(x)
     #print(y)
     # plotting the points 
-    plt.plot(x, y, label=f"{parameter} vs Time")
+    plt.plot(x, y, label=f"gNodeB - {parameter} vs Time")
 
     # naming the x axis
     plt.xlabel('Timestamp')
     # naming the y axis
     plt.ylabel(parameter)
 
-    # giving a title to my graph
-    plt.title(f"UE {ueNum} - {parameter} vs Time")
-
     #pp.pprint(ueData)
     uex = [p["timestamp"] for p in ueData]
-    uey = [p["gw_container"]["dl_bitrate"] for p in ueData]
-    #print(x)
-    #print(y)
+    uey = [p["gw_container"]["dl_bitrate"] * 1024 * 1024 for p in ueData]  # the bitrate is reported in Mbps
+    print(uex)
+    print(uey)
     # plotting the points
-    plt.plot(uex, uey, label=f"dl bbitrate vs Time")
+    plt.plot(uex, uey, label=f"UE1 - dl_bitrate vs Time")
 
 
     #pp.pprint(ueData)
     iperfx = [p["timestamp"] for p in iperfData]
     iperfy = [p["bits_per_second"] for p in iperfData]
-    #print(x)
-    #print(y)
+    print(iperfx)
+    print(iperfy)
     # plotting the points
-    plt.plot(iperfx, iperfy, label=f"iperfbitspersecond")
+    plt.plot(iperfx, iperfy, label=f"IPerf3 - DL bit rate")
 
 
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     gNodeBData = loadDataFromJsonFile(args.inputGnbJson)
     ueData = loadDataFromJsonFile(args.inputUeJson)
     iperfData = extractBandwidthInfoFromIperfData(loadDataFromJsonFile(args.inputIPerfJson))
-    pp.pprint(iperfData)
+    #pp.pprint(iperfData)
 
     parameters = ["pci",
                   "rnti",

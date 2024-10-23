@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "UE1 - IPerf3 Client"
 set -e
 
 # bring in common functions

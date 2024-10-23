@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "UE1"
 set -e
 
 # bring in common functions
