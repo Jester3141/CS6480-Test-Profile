@@ -104,7 +104,7 @@ node_types = [
 
 
 def requestUENode(ueNum):
-    node = request.RawPC("node")
+    node = request.RawPC("UEnode%s" % ueNum)
     node.hardware_type = params.nodetype
 
     node.disk_image = UBUNTU_IMG
