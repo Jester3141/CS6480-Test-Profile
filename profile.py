@@ -111,7 +111,7 @@ def requestUENode(ueNum):
     for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
         cmd = "sudo {} '{}' {}".format(SRS_DEPLOY_SCRIPT, type_hash, srs_type)
         node.addService(rspec.Execute(shell="bash", command=cmd))
-    node.addService(rspec.Execute(shell="bash", command=f"/local/repository/bin/installUEComponents.sh {ueNum}"))
+    node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/installUEComponents.sh %s" % ueNum))
 
 
 
