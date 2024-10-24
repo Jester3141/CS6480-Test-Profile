@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "Good gNodeB"
 set -e
 
 # bring in common functions

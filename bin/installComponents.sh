@@ -6,9 +6,6 @@ source ${SCRIPT_DIR}/activateFunctions.sh
 # ensure we are ready to run the 5G core
 sudo ./deploy-srs.sh release_24_04 srsRAN_Project
 
-# ensure we are ready to run the 4G gNodeB
-sudo ./deploy-srs.sh release_23_11 srsRAN_4G
-
 
 # install other components
 sudo apt install -y python3-pip
@@ -52,17 +49,4 @@ sudo cp /etc/srsran/gnb.conf /etc/srsran/gnb_evil.conf
 sudo ${SCRIPT_DIR}/modifyGnbConfig.py -f /etc/srsran/gnb_evil.conf --metricsIpAddr 127.0.0.1 --metricsPort 55556 --testMode
 
 
-##############################################################
-# setup the UE(s)'s' config file
-echo "Writing modified UE files to /etc/srsran/   (turning on json logging)"
-for i in {1..4}
-do
-    cp /etc/srsran/ue.conf /tmp/ue${i}.conf
-    echo "[general]"                                                               >> /tmp/ue${i}.conf
-    echo "metrics_json_enable   = true"                                            >> /tmp/ue${i}.conf
-    echo "metrics_json_filename = ${RESULTS_FOLDER}/roughData/UE${i}_metrics.json" >> /tmp/ue${i}.conf
-    sudo cp /tmp/ue${i}.conf /etc/srsran/
-done
-
-
-
+${SCRIPT_DIR}/installUEComponents.sh

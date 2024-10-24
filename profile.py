@@ -86,7 +86,6 @@ https://open5gs.org
 https://github.com/srsran/srsRAN_Project
 """
 
-
 BIN_PATH = "/local/repository/bin"
 ETC_PATH = "/local/repository/etc"
 SRS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-srs.sh")
@@ -102,6 +101,23 @@ node_types = [
     ("d430", "Emulab, d430"),
     ("d740", "Emulab, d740"),
 ]
+
+
+def requestUENode(ueNum):
+    node = request.RawPC("node")
+    node.hardware_type = params.nodetype
+
+    node.disk_image = UBUNTU_IMG
+    for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
+        cmd = "sudo {} '{}' {}".format(SRS_DEPLOY_SCRIPT, type_hash, srs_type)
+        node.addService(rspec.Execute(shell="bash", command=cmd))
+    node.addService(rspec.Execute(shell="bash", command=f"/local/repository/bin/installUEComponents.sh {ueNum}"))
+
+
+
+
+
+
 
 pc.defineParameter(
     name="nodetype",
@@ -141,6 +157,9 @@ for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
     node.addService(rspec.Execute(shell="bash", command=cmd))
 node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/installComponents.sh"))
 node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/launchExperimentInTmux.sh"))
+
+for i in range(1,5):  # 1-4
+    requestUENode(ueNum=i)
 
 if params.enable_vnc:
     node.startVNC()
