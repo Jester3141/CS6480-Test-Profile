@@ -158,8 +158,8 @@ for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
 node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/installComponents.sh"))
 node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/launchExperimentInTmux.sh"))
 
-for i in range(1,5):  # 1-4
-    requestUENode(ueNum=i)
+# for i in range(1,5):  # 1-4
+#     requestUENode(ueNum=i)
 
 if params.enable_vnc:
     node.startVNC()
