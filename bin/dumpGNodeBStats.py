@@ -48,5 +48,5 @@ if __name__ == "__main__":
         # Save received data to a file
         filename = args.outputFile
         with open(filename, "w") as file:
-            json.dump(received_data, file)
+            json.dump(received_data, file, indent=4)
         print(f"Received data saved to {filename}. Exiting...")
