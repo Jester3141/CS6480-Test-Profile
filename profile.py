@@ -184,11 +184,20 @@ fslink.vlan_tagging = True
 
 
 node.disk_image = UBUNTU_IMG
-for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
-    cmd = "sudo {} '{}' {}".format(SRS_DEPLOY_SCRIPT, type_hash, srs_type)
-    node.addService(rspec.Execute(shell="bash", command=cmd))
-node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/installComponents.sh"))
-node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/launchExperimentInTmux.sh"))
+#for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
+#    cmd = "sudo {} '{}' {}".format(SRS_DEPLOY_SCRIPT, type_hash, srs_type)
+#    node.addService(rspec.Execute(shell="bash", command=cmd))
+#node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/installComponents.sh"))
+#node.addService(rspec.Execute(shell="bash", command="/local/repository/bin/launchExperimentInTmux.sh"))
+
+node2 = request.RawPC("node")
+node2.hardware_type = params.nodetype
+node2.disk_image = UBUNTU_IMG
+# We need a link to talk to the remote file system, so make an interface.
+ifac2e = node2.addInterface()
+fslink.addInterface(iface2)
+
+
 
 # for i in range(1,5):  # 1-4
 #     requestUENode(ueNum=i)
