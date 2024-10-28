@@ -194,7 +194,7 @@ node2 = request.RawPC("node2")
 node2.hardware_type = params.nodetype
 node2.disk_image = UBUNTU_IMG
 # We need a link to talk to the remote file system, so make an interface.
-ifac2e = node2.addInterface()
+iface2 = node2.addInterface()
 fslink.addInterface(iface2)
 
 
