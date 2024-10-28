@@ -116,7 +116,9 @@ def requestUENode(ueNum):
 
 
 
-
+pc.defineParameter("dataset", "Your dataset URN",
+                   portal.ParameterType.STRING,
+                   "urn:publicid:IDN+emulab.net:tddinterfere+ltdataset+tddresults")
 
 
 pc.defineParameter(
@@ -150,6 +152,36 @@ request = pc.makeRequestRSpec()
 
 node = request.RawPC("node")
 node.hardware_type = params.nodetype
+# We need a link to talk to the remote file system, so make an interface.
+iface = node.addInterface()
+# The remote file system is represented by special node.
+fsnode = request.RemoteBlockstore("fsnode", "/mydata")
+# This URN is displayed in the web interfaace for your dataset.
+fsnode.dataset = params.dataset
+
+# The "rwclone" attribute allows you to map a writable copy of the
+# indicated SAN-based dataset. In this way, multiple nodes can map
+# the same dataset simultaneously. In many situations, this is more
+# useful than a "readonly" mapping. For example, a dataset
+# containing a Linux source tree could be mapped into multiple
+# nodes, each of which could do its own independent,
+# non-conflicting configure and build in their respective copies.
+# Currently, rwclones are "ephemeral" in that any changes made are
+# lost when the experiment mapping the clone is terminated.
+#
+fsnode.rwclone = True
+
+fslink = request.Link("fslink")
+fslink.addInterface(iface)
+fslink.addInterface(fsnode.interface)
+
+# Special attributes for this link that we must use.
+fslink.best_effort = True
+fslink.vlan_tagging = True
+
+
+
+
 
 node.disk_image = UBUNTU_IMG
 for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
